@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using trade.api.DTOs.TradeDTOs;
+using trade.api.Models.DTOs.TradeDTOs;
 using trade.api.Services;
 
 namespace trade.api.Controllers

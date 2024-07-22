@@ -1,4 +1,4 @@
-﻿namespace trade.api.DTOs.TradeDTOs
+﻿namespace trade.api.Models.DTOs.TradeDTOs
 {
     public class TradePostDto
     {

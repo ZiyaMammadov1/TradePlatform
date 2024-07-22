@@ -1,4 +1,5 @@
-﻿using trade.api.DTOs.TradeDTOs;
+﻿using System.Timers;
+using trade.api.Models.DTOs.TradeDTOs;
 
 namespace trade.api.Services
 {
@@ -18,7 +19,7 @@ namespace trade.api.Services
             bool isWon = false;
             decimal previousRate = _exchangeService.GetCurrentExchangeRateValue();
 
-            Task.Delay(tradePostDto.TimeSpan);
+            Thread.Sleep(tradePostDto.TimeSpan);
 
             decimal nextRate = _exchangeService.GetCurrentExchangeRateValue();
 
@@ -28,6 +29,8 @@ namespace trade.api.Services
             }
 
             return _profitService.CalculateProfit(tradePostDto.Invest, isWon);
+
         }
+
     }
 }
