@@ -3,6 +3,7 @@
     public class LoginGetDto
     {
         public string UserName { get; set; }
+        public string Token { get; set; }
         public decimal Deposit { get; set; }
     }
 }

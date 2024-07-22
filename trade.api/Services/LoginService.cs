@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using trade.api.Constants;
 using trade.api.Models.DTOs.LoginDTOs;
 using trade.api.Models.Entities;
@@ -8,6 +9,13 @@ namespace trade.api.Services;
 
 public class LoginService
 {
+    private readonly JwtService _jwtService;
+
+    public LoginService(JwtService jwtService)
+    {
+        _jwtService = jwtService;
+    }
+
     public LoginGetDto SignIn(LoginDto loginDto)
     {
         User user = Resource.users.FirstOrDefault(x => x.UserName == loginDto.UserName);
@@ -19,6 +27,7 @@ public class LoginService
                 return new LoginGetDto
                 {
                     UserName = loginDto.UserName,
+                    Token = _jwtService.Create(user),
                     Deposit = user.Deposit
                 };
             }

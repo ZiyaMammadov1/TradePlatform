@@ -44,6 +44,7 @@ namespace trade.api
             builder.Services.AddScoped<TradeService>();
             builder.Services.AddScoped<ProfitService>();
             builder.Services.AddScoped<LoginService>();
+            builder.Services.AddScoped<JwtService>();
 
             var app = builder.Build();
 
