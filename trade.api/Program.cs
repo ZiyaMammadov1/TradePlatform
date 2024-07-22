@@ -1,6 +1,10 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
+using System.Reflection;
 using System.Text;
 using trade.api.Services;
 
@@ -8,13 +12,17 @@ namespace trade.api
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddFluentValidation(
+                validator => validator.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("az");
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

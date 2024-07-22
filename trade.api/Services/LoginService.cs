@@ -18,7 +18,7 @@ public class LoginService
 
     public LoginGetDto SignIn(LoginDto loginDto)
     {
-        User user = Resource.users.FirstOrDefault(x => x.UserName == loginDto.UserName);
+        User user = Resource.Users.FirstOrDefault(x => x.UserName == loginDto.UserName);
 
         if (user != null)
         {
