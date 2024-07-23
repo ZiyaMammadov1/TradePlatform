@@ -18,7 +18,9 @@ namespace trade.api.Controllers
         [HttpPost]
         public IActionResult Login(LoginDto dto)
         {
-            return Ok(_loginService.SignIn(dto));
+            var result = _loginService.SignIn(dto);
+
+            return result.Success ? Ok(result) : BadRequest(result.Message);
         }
     }
 }

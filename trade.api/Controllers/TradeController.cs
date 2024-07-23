@@ -18,7 +18,9 @@ namespace trade.api.Controllers
         [HttpPost]
         public IActionResult NewTrade(TradePostDto tradePostDto)
         {
-            return Ok(_tradeService.NewTrade(tradePostDto));
+            var result = _tradeService.NewTrade(tradePostDto);
+
+            return result.Success ? Ok(result) : BadRequest(result.Message);
         }
     }
 }

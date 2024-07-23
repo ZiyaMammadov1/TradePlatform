@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using trade.api.Models.Common;
 
 namespace trade.api.Services
 {
@@ -12,7 +13,7 @@ namespace trade.api.Services
         {
             random = new Random();
         }
-        public decimal GetCurrentExchangeRateValue()
+        public ApiResponse GetCurrentExchangeRateValue()
         {
             lowerlimit = DateTime.Now.Second switch
             {
@@ -25,7 +26,7 @@ namespace trade.api.Services
             };
 
             decimal scaled = (decimal)(random.NextDouble()) * (decimal)(upperlimit - lowerlimit);
-            return lowerlimit + scaled;
+            return new ApiResponse() { Data = lowerlimit + scaled, Message = null, Success = true }; ;
         }
 
     }

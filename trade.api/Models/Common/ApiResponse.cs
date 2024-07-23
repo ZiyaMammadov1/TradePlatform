@@ -6,4 +6,11 @@
         public bool Success { get; set; }
         public List<string> Message { get; set; }
     }
+
+    public class ApiResponse<T>
+    {
+        public object Data { get; set; }
+        public bool Success { get; set; }
+        public List<string> Message { get; set; }
+    }
 }

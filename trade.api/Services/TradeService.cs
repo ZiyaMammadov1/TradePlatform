@@ -1,4 +1,5 @@
 ﻿using System.Timers;
+using trade.api.Models.Common;
 using trade.api.Models.DTOs.TradeDTOs;
 
 namespace trade.api.Services
@@ -14,23 +15,27 @@ namespace trade.api.Services
             _profitService = profitService;
         }
 
-        public double NewTrade(TradePostDto tradePostDto)
+        public ApiResponse<double> NewTrade(TradePostDto tradePostDto)
         {
             bool isWon = false;
-            decimal previousRate = _exchangeService.GetCurrentExchangeRateValue();
+            decimal previousRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
 
             Thread.Sleep(tradePostDto.TimeSpan);
 
-            decimal nextRate = _exchangeService.GetCurrentExchangeRateValue();
+            decimal nextRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
 
             if ((tradePostDto.Direction && nextRate > previousRate) || (!tradePostDto.Direction && nextRate < previousRate))
             {
                 isWon = true;
             }
 
-            return _profitService.CalculateProfit(tradePostDto.Invest, isWon);
+            return new ApiResponse<double>()
+            {
+                Data = _profitService.CalculateProfit(tradePostDto.Invest, isWon),
+                Success = true,
+                Message = null
+            };
 
         }
-
     }
 }
