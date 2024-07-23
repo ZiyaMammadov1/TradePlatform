@@ -35,6 +35,6 @@ public class LoginService
                 return new ApiResponse<LoginGetDto>  { Data = dto, Success = true, Message = null };
             }
         }
-        return new ApiResponse<LoginGetDto> { Data = null, Success = true, Message = new List<string>() { "Username or password is incorrect." } };
+        return new ApiResponse<LoginGetDto> { Data = null, Success = true, Message = new List<string>() { "Məlumatlar doğru deyil" } };
     }
 }
