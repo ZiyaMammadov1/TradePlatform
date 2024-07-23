@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -52,11 +51,6 @@ namespace trade.api
                     Description = "Please insert JWT with Bearer into field",
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey
-
-                    //Name = "Authorization",
-                    //In = ParameterLocation.Header,
-                    //Type = SecuritySchemeType.ApiKey,
-                    //Scheme = "Bearer"
                 });
 
                 op.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -86,9 +80,9 @@ namespace trade.api
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
+            }).AddJwtBearer(options =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = builder.Configuration["Jwt:Issuer"],
                     ValidAudience = builder.Configuration["Jwt:Audience"],
@@ -101,11 +95,14 @@ namespace trade.api
                 };
             });
 
+            builder.Services.AddMemoryCache();
+
             builder.Services.AddScoped<ExchangeService>();
             builder.Services.AddScoped<TradeService>();
             builder.Services.AddScoped<ProfitService>();
             builder.Services.AddScoped<LoginService>();
             builder.Services.AddScoped<JwtService>();
+            builder.Services.AddScoped<UserService>();
 
             var app = builder.Build();
 

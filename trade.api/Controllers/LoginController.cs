@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using trade.api.Models.DTOs.LoginDTOs;
 using trade.api.Services;
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using Microsoft.Extensions.Caching.Memory;
 using trade.api.Constants;
 using trade.api.Models.Common;
 using trade.api.Models.DTOs.LoginDTOs;
@@ -11,10 +10,13 @@ namespace trade.api.Services;
 public class LoginService
 {
     private readonly JwtService _jwtService;
+    private readonly IMemoryCache _memoryCache;
 
-    public LoginService(JwtService jwtService)
+
+    public LoginService(JwtService jwtService, IMemoryCache memoryCache)
     {
         _jwtService = jwtService;
+        _memoryCache = memoryCache;
     }
 
     public ApiResponse<LoginGetDto> SignIn(LoginDto loginDto)
@@ -32,7 +34,9 @@ public class LoginService
                     Deposit = user.Deposit
                 };
 
-                return new ApiResponse<LoginGetDto>  { Data = dto, Success = true, Message = null };
+                _memoryCache.Set("deposit", user.Deposit);
+
+                return new ApiResponse<LoginGetDto> { Data = dto, Success = true, Message = null };
             }
         }
         return new ApiResponse<LoginGetDto> { Data = null, Success = true, Message = new List<string>() { "Məlumatlar doğru deyil" } };

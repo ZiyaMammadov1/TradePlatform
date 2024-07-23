@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using trade.api.Models.Common;
+﻿using trade.api.Models.Common;
 
 namespace trade.api.Services
 {

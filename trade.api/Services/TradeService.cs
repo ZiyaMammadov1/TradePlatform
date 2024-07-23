@@ -1,6 +1,8 @@
-﻿using System.Timers;
+﻿using Microsoft.Extensions.Caching.Memory;
 using trade.api.Models.Common;
+using trade.api.Models.DTOs.ProfitDTOs;
 using trade.api.Models.DTOs.TradeDTOs;
+using trade.api.Models.Entities;
 
 namespace trade.api.Services
 {
@@ -8,32 +10,54 @@ namespace trade.api.Services
     {
         public readonly ExchangeService _exchangeService;
         public readonly ProfitService _profitService;
+        public readonly UserService _userService;
+        public readonly IMemoryCache _memoryCache;
 
-        public TradeService(ExchangeService exchangeService, ProfitService profitService)
+        public TradeService(ExchangeService exchangeService, ProfitService profitService, UserService userService, IMemoryCache memoryCache)
         {
             _exchangeService = exchangeService;
             _profitService = profitService;
+            _userService = userService;
+            _memoryCache = memoryCache;
         }
 
-        public ApiResponse<double> NewTrade(TradePostDto tradePostDto)
+        public ApiResponse<ProfitGetDto> NewTrade(TradePostDto tradePostDto)
         {
-            bool isWon = false;
-            decimal previousRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
+            ApiResponse<bool> verify = _userService.CheckBudge(tradePostDto.Invest);
 
-            Thread.Sleep(tradePostDto.TimeSpan);
-
-            decimal nextRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
-
-            if ((tradePostDto.Direction && nextRate > previousRate) || (!tradePostDto.Direction && nextRate < previousRate))
+            if (verify.Success)
             {
-                isWon = true;
+                bool isWon = false;
+                decimal previousRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
+
+                Thread.Sleep(tradePostDto.TimeSpan);
+
+                decimal nextRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
+
+                if ((tradePostDto.Direction && nextRate > previousRate) || (!tradePostDto.Direction && nextRate < previousRate))
+                {
+                    isWon = true;
+                }
+
+                double profit = _profitService.CalculateProfit(tradePostDto.Invest, isWon);
+                double deposit = (double)verify.Data + profit;
+
+                _memoryCache.Set("deposit", deposit);
+
+                return new ApiResponse<ProfitGetDto>()
+                {
+                    Data = new ProfitGetDto()
+                    {
+                        Deposit = deposit,Earn = profit
+                    }, 
+                    Success = true, Message = null
+                };
+
             }
 
-            return new ApiResponse<double>()
+            return new ApiResponse<ProfitGetDto>()
             {
-                Data = _profitService.CalculateProfit(tradePostDto.Invest, isWon),
-                Success = true,
-                Message = null
+                Data = null, Success = true, Message = verify.Message
             };
 
         }

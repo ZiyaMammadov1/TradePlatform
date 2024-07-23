@@ -8,7 +8,7 @@
             {
                 return invest * 0.95;
             }
-            return 0;
+            return -invest;
         }
     }
 }
