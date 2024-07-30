@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using trade.api.Models.Common;
+using trade.api.Models.DTOs.IndicatorDTOs;
 using trade.api.Services;
 
 namespace trade.api
@@ -118,7 +119,7 @@ namespace trade.api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapGet("current-rate", (ExchangeService exchangeService) => exchangeService.GetCurrentExchangeRateValue());
+            app.MapGet("current-rate", (ExchangeService exchangeService, Indicators indicators) => exchangeService.GetCurrentExchangeRateValue(indicators));
 
             app.MapControllers();
 
