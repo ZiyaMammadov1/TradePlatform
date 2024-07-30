@@ -104,6 +104,7 @@ namespace trade.api
             builder.Services.AddScoped<LoginService>();
             builder.Services.AddScoped<JwtService>();
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<IndicatorService>();
 
             var app = builder.Build();
 
@@ -119,7 +120,7 @@ namespace trade.api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapGet("current-rate", (ExchangeService exchangeService, Indicators indicators) => exchangeService.GetCurrentExchangeRateValue(indicators));
+            app.MapPost("current-rate", (ExchangeService exchangeService,[FromBody] IndicatorPostDto indicators) => exchangeService.GetCurrentExchangeRateAndIndicatorValues(indicators));
 
             app.MapControllers();
 

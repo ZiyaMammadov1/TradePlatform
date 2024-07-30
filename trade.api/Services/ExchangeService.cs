@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using trade.api.Models.Common;
+using trade.api.Models.DTOs.ExchnageDTOs;
 using trade.api.Models.DTOs.IndicatorDTOs;
 
 namespace trade.api.Services
@@ -10,14 +11,16 @@ namespace trade.api.Services
         private decimal lowerlimit = 0;
         private readonly Random _random;
         private readonly IMemoryCache _memoryCache;
-        private Queue<decimal> _lastRates;
+        private Queue<decimal> _lastRates = new();
+        private IndicatorService _indicatorService;
 
-        public ExchangeService(IMemoryCache memoryCache)
+        public ExchangeService(IMemoryCache memoryCache, IndicatorService indicatorService)
         {
             _random = new Random();
             _memoryCache = memoryCache;
+            _indicatorService = indicatorService;
         }
-        public ApiResponse GetCurrentExchangeRateValue(Indicators Indicators)
+        public ApiResponse GetCurrentExchangeRateAndIndicatorValues(IndicatorPostDto indicators = null)
         {
             lowerlimit = DateTime.Now.Second switch
             {
@@ -31,11 +34,21 @@ namespace trade.api.Services
 
             decimal scaled = (decimal)(_random.NextDouble()) * (decimal)(upperlimit - lowerlimit);
 
-            CheckAndSetRateIntoQueue(scaled);
+            decimal rate = lowerlimit + scaled;
+
+            CheckAndSetRateIntoQueue(rate);
 
             _memoryCache.Set("lastRates", _lastRates);
 
-            return new ApiResponse() { Data = lowerlimit + scaled, Message = null, Success = true };
+            IndicatorValues indicatorValues = _indicatorService.CalculateValues(indicators);
+
+            ExchangeGetDto exchangeGetDto = new ExchangeGetDto
+            {
+                Rate = rate,
+                IndicatorValues = indicatorValues
+            };
+
+            return new ApiResponse() { Data = exchangeGetDto, Message = null, Success = true };
         }
 
         private void CheckAndSetRateIntoQueue(decimal scaled)

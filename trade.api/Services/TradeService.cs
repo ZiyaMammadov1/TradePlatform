@@ -28,11 +28,11 @@ namespace trade.api.Services
             if (verify.Success)
             {
                 bool isWon = false;
-                decimal previousRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
+                decimal previousRate = (decimal)_exchangeService.GetCurrentExchangeRateAndIndicatorValues().Data;
 
                 Thread.Sleep(tradePostDto.TimeSpan);
 
-                decimal nextRate = (decimal)_exchangeService.GetCurrentExchangeRateValue().Data;
+                decimal nextRate = (decimal)_exchangeService.GetCurrentExchangeRateAndIndicatorValues().Data;
 
                 if ((tradePostDto.Direction && nextRate > previousRate) || (!tradePostDto.Direction && nextRate < previousRate))
                 {
