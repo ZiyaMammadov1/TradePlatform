@@ -28,11 +28,11 @@ namespace trade.api.Services
             if (verify.Success)
             {
                 bool isWon = false;
-                decimal previousRate = (decimal)_exchangeService.GetCurrentExchangeRateAndIndicatorValues().Data;
+                decimal previousRate = tradePostDto.CurrentRate;//(decimal)_exchangeService.GetCurrentExchangeRateAndIndicatorValues().Data;
 
                 Thread.Sleep(tradePostDto.TimeSpan);
 
-                decimal nextRate = (decimal)_exchangeService.GetCurrentExchangeRateAndIndicatorValues().Data;
+                decimal nextRate = (decimal)_exchangeService.GetFakeCurrentExchangeRateAndIndicatorValues().Data;
 
                 if ((tradePostDto.Direction && nextRate > previousRate) || (!tradePostDto.Direction && nextRate < previousRate))
                 {
@@ -52,7 +52,6 @@ namespace trade.api.Services
                     }, 
                     Success = true, Message = null
                 };
-
             }
 
             return new ApiResponse<ProfitGetDto>()

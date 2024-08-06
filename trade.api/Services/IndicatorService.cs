@@ -1,19 +1,23 @@
-﻿using trade.api.Models.DTOs.IndicatorDTOs;
+﻿using System;
+using trade.api.Models.DTOs.IndicatorDTOs;
 
 namespace trade.api.Services
 {
     public class IndicatorService
     {
-        private int count = 0;
-        public IndicatorValues CalculateValues(IndicatorPostDto indicators)
+        private readonly Random _random = new Random();
+        public IndicatorValues CalculateValues(IndicatorPostDto indicators, decimal fakeRate)
         {
             IndicatorValues values = new IndicatorValues();
 
-            count++;
-
-            values.MA = 0;
+            if(indicators.MA) values.MA = GenerateFakeIndicatorValue(fakeRate);
 
             return values;
+        }
+
+        private decimal GenerateFakeIndicatorValue(decimal fake)
+        {
+            return (decimal)_random.NextDouble();
         }
 
     }

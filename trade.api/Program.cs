@@ -15,7 +15,6 @@ namespace trade.api
 {
     public class Program
     {
-
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -120,7 +119,7 @@ namespace trade.api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapPost("current-rate", (ExchangeService exchangeService,[FromBody] IndicatorPostDto indicators) => exchangeService.GetCurrentExchangeRateAndIndicatorValues(indicators));
+            app.MapPost("current-rate", (ExchangeService exchangeService,[FromBody] IndicatorPostDto indicators) => exchangeService.GetFakeCurrentExchangeRateAndIndicatorValues(indicators));
 
             app.MapControllers();
 

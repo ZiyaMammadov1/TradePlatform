@@ -20,7 +20,7 @@ namespace trade.api.Services
             _memoryCache = memoryCache;
             _indicatorService = indicatorService;
         }
-        public ApiResponse GetCurrentExchangeRateAndIndicatorValues(IndicatorPostDto indicators = null)
+        public ApiResponse GetFakeCurrentExchangeRateAndIndicatorValues(IndicatorPostDto indicators = null)
         {
             lowerlimit = DateTime.Now.Second switch
             {
@@ -40,7 +40,7 @@ namespace trade.api.Services
 
             _memoryCache.Set("lastRates", _lastRates);
 
-            IndicatorValues indicatorValues = _indicatorService.CalculateValues(indicators);
+            IndicatorValues indicatorValues = _indicatorService.CalculateValues(indicators, rate);
 
             ExchangeGetDto exchangeGetDto = new ExchangeGetDto
             {
