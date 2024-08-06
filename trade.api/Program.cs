@@ -130,6 +130,8 @@ namespace trade.api
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors("corsConfig");
+
             app.MapPost("current-rate", (ExchangeService exchangeService, [FromBody] IndicatorPostDto indicators) => exchangeService.GetFakeCurrentExchangeRateAndIndicatorValues(indicators));
 
             app.MapControllers();
