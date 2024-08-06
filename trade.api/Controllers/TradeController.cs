@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using trade.api.Models.DTOs.TradeDTOs;
 using trade.api.Services;
@@ -6,6 +7,7 @@ using trade.api.Services;
 namespace trade.api.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("corsConfig")]
     [ApiController]
     [Authorize]
     public class TradeController : ControllerBase

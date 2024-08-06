@@ -2,7 +2,6 @@
 using trade.api.Models.Common;
 using trade.api.Models.DTOs.ProfitDTOs;
 using trade.api.Models.DTOs.TradeDTOs;
-using trade.api.Models.Entities;
 
 namespace trade.api.Services
 {
@@ -48,15 +47,19 @@ namespace trade.api.Services
                 {
                     Data = new ProfitGetDto()
                     {
-                        Deposit = deposit,Earn = profit
-                    }, 
-                    Success = true, Message = null
+                        Deposit = deposit,
+                        Earn = profit
+                    },
+                    Success = true,
+                    Message = null
                 };
             }
 
             return new ApiResponse<ProfitGetDto>()
             {
-                Data = null, Success = true, Message = verify.Message
+                Data = null,
+                Success = true,
+                Message = verify.Message
             };
 
         }

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using trade.api.Models.DTOs.LoginDTOs;
 using trade.api.Services;
 
 namespace trade.api.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("corsConfig")]
     [ApiController]
     public class LoginController : ControllerBase
     {

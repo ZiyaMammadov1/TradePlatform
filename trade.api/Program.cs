@@ -105,21 +105,32 @@ namespace trade.api
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<IndicatorService>();
 
+            builder.Services.AddCors(cors =>
+            {
+                cors.AddPolicy("corsConfig", conf =>
+                {
+                    conf.AllowAnyHeader();
+                    conf.AllowAnyMethod();
+                    conf.AllowAnyOrigin();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+               
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapPost("current-rate", (ExchangeService exchangeService,[FromBody] IndicatorPostDto indicators) => exchangeService.GetFakeCurrentExchangeRateAndIndicatorValues(indicators));
+            app.MapPost("current-rate", (ExchangeService exchangeService, [FromBody] IndicatorPostDto indicators) => exchangeService.GetFakeCurrentExchangeRateAndIndicatorValues(indicators));
 
             app.MapControllers();
 

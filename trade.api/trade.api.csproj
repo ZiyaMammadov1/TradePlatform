@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Filters\**" />
     <Compile Remove="Models\NewFolder\**" />
+    <Content Remove="Filters\**" />
     <Content Remove="Models\NewFolder\**" />
+    <EmbeddedResource Remove="Filters\**" />
     <EmbeddedResource Remove="Models\NewFolder\**" />
+    <None Remove="Filters\**" />
     <None Remove="Models\NewFolder\**" />
   </ItemGroup>
 
@@ -23,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Filters\" />
     <Folder Include="Utils\" />
   </ItemGroup>
 

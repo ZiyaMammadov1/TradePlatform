@@ -1,5 +1,4 @@
-﻿using System;
-using trade.api.Models.DTOs.IndicatorDTOs;
+﻿using trade.api.Models.DTOs.IndicatorDTOs;
 
 namespace trade.api.Services
 {
@@ -10,7 +9,7 @@ namespace trade.api.Services
         {
             IndicatorValues values = new IndicatorValues();
 
-            if(indicators.MA) values.MA = GenerateFakeIndicatorValue(fakeRate);
+            if (indicators.MA) values.MA = GenerateFakeIndicatorValue(fakeRate);
 
             return values;
         }
